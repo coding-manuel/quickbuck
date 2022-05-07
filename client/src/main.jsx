@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { MantineProvider } from '@mantine/core';
 import { BrowserRouter } from "react-router-dom";
 import { TransactionsProvider } from './context/TransactionsContext';
+import { NotificationsProvider } from '@mantine/notifications';
 
 import { theme } from './theme';
 import App from './App'
@@ -15,11 +16,13 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       withNormalizeCSS
       theme={theme}
     >
-      <BrowserRouter>
-        <TransactionsProvider>
-          <App />
-        </TransactionsProvider>
-      </BrowserRouter>
+      <NotificationsProvider>
+        <BrowserRouter>
+          <TransactionsProvider>
+            <App />
+          </TransactionsProvider>
+        </BrowserRouter>
+      </NotificationsProvider>
     </MantineProvider>
   </React.StrictMode>
 )

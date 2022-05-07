@@ -1,8 +1,9 @@
-import React, {useContext} from 'react'
-import { Paper, Stack, Title, Grid, Text, Center, Box, Divider } from '@mantine/core';
+import React, {useContext, useEffect} from 'react'
+import { Paper, Stack, Title, Grid, Text, MediaQuery, Divider } from '@mantine/core';
 import DummyData from '../utils/DummyData'
 import { shortenAddress } from '../utils/shorternAddress'
 import { TransactionContext } from '../context/TransactionsContext'
+import { showNotification } from '@mantine/notifications';
 
 const TransactionCard = ({id, url, message, timestamp, addressFrom, amount, addressTo }) => {
   return(
@@ -19,19 +20,30 @@ const TransactionCard = ({id, url, message, timestamp, addressFrom, amount, addr
 }
 
 export default function Transactions() {
-    const {currentAccount, transactions} = useContext(TransactionContext);
+    const {currentAccount, transactions, notify} = useContext(TransactionContext);
+    useEffect(()=>{
+      showNotification({
+        title: 'Default notification',
+        message: 'Hey there, your code is awesome! 🤥',
+      })
+    }, [notify])
     return (
-      <Stack>
-          <Title order={5}>
-              Latest Transactions
-          </Title>
-          {!currentAccount ? <Title order={6}>Connect</Title> :
-          <Grid>
-            {transactions.reverse().map((transaction, i) =>{
-              return <TransactionCard key={i} {...transaction} />
-            })}
-          </Grid>
-          }
-      </Stack>
+      <MediaQuery
+        query="(max-width: 600px)"
+        styles={{textAlign: 'center', alignItems: 'center', marginBottom: '24px' }}
+      >
+        <Stack>
+            <Title order={5}>
+                Latest Transactions
+            </Title>
+            {!currentAccount ? <Title order={5}>Connect your wallet to see the transactions</Title> : transactions == [] ? <Title order={5}>No Transactions Yet</Title> :
+            <Grid>
+              {transactions.reverse().map((transaction, i) =>{
+                return <TransactionCard key={i} {...transaction} />
+              })}
+            </Grid>
+            }
+        </Stack>
+      </MediaQuery>
     )
 }

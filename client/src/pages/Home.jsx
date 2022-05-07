@@ -7,7 +7,7 @@ import Transactions from '../components/Transactions';
 import { TransactionContext } from '../context/TransactionsContext';
 
 export default function Home() {
-  const {connectWallet, currentAccount, sendTransaction, loading} = useContext(TransactionContext);
+  const {connectWallet, currentAccount, sendTransaction, loading, wloading} = useContext(TransactionContext);
   const form = useForm({
     initialValues: {
       address: '',
@@ -35,14 +35,14 @@ export default function Home() {
         <Group spacing='lg' my={40} grow position='center'>
           <MediaQuery
             query="(max-width: 600px)"
-            styles={{width: '80%', maxWidth: '80%', textAlign: 'center' }}
+            styles={{width: '80%', maxWidth: '80%', textAlign: 'center', alignItems: 'center', marginBottom: '24px' }}
           >
             <Stack>
               <Title order={3}>
                 Send Crypto from <br />Anywhere <br /> to<br />Anyone
               </Title>
               {!currentAccount &&
-                <Button onClick={connectWallet} sx={{width: '60%'}}>
+                <Button loading={wloading} onClick={connectWallet} sx={{width: '60%'}}>
                   Connect Wallet
                 </Button>
               }

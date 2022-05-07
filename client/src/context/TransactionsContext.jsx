@@ -19,8 +19,10 @@ export const TransactionsProvider = ({children}) => {
     const [currentAccount, setCurrentAccount] = useState('')
     const [formData, setFormData] = useState({address: '', amount: '', keyword: '', message: ''})
     const [loading, setLoading] = useState(false)
+    const [wloading, setWloading] = useState(false)
     const [transactionCount, setTransactionCount] = useState(localStorage.getItem('transactionCount'))
     const [transactions, setTransactions] = useState([]);
+    const [notify, setNotify] = useState(false);
 
     const getAllTransactions = async () =>{
         try {
@@ -56,6 +58,7 @@ export const TransactionsProvider = ({children}) => {
                 getAllTransactions()
             }else{
                 console.log('No Accounts Found')
+                setNotify(true)
             }
         } catch (error) {
             console.log(error)
@@ -79,13 +82,20 @@ export const TransactionsProvider = ({children}) => {
 
     const connectWallet = async () => {
         try {
+            setNotify({})
+
+            setWloading(true)
             if(!ethereum) return alert("Please Install MetaMask")
 
             const accounts = await ethereum.request({method: "eth_requestAccounts"})
 
             setCurrentAccount(accounts[0])
+
+            setWloading(false)
         } catch (error) {
             console.log(error)
+
+            setWloading(false)
 
             throw new Error("No Ethereum Object")
         }
@@ -124,6 +134,7 @@ export const TransactionsProvider = ({children}) => {
         } catch (error) {
             console.log(error)
 
+            setLoading(false)
             throw new Error("No Ethereum Object")
         }
     }
@@ -134,7 +145,7 @@ export const TransactionsProvider = ({children}) => {
     }, [])
 
     return(
-        <TransactionContext.Provider value={{connectWallet, currentAccount, sendTransaction, setFormData, loading, transactions}}>
+        <TransactionContext.Provider value={{connectWallet, currentAccount, sendTransaction, setFormData, loading, transactions, wloading, notify}}>
             {children}
         </TransactionContext.Provider>
     )
