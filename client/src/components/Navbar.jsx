@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { createStyles, Header, Container, Group, Burger, Paper, Transition, Button } from '@mantine/core';
+import { createStyles, Header, Container, Group, Burger, Paper, Transition, Button, Avatar } from '@mantine/core';
 import { useBooleanToggle } from '@mantine/hooks';
+import { TransactionContext } from '../context/TransactionsContext'
 
 import Logo from '../assets/logo.svg';
 
@@ -80,6 +81,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export default function Navbar({ links }) {
+  const {currentAccount} = useContext(TransactionContext);
   const [opened, toggleOpened] = useBooleanToggle(false);
   const [active, setActive] = useState(links[0].link);
   const { classes, cx } = useStyles();
@@ -107,9 +109,12 @@ export default function Navbar({ links }) {
             {items}
           </Group>
           <Group>
+            {!currentAccount ?
             <Button radius="md" size="xs">
               Connect Wallet
-            </Button>
+            </Button> :
+            <Avatar radius="xl" />
+            }
 
             <Burger
               opened={opened}

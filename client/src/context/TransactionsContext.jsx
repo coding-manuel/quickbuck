@@ -22,7 +22,6 @@ export const TransactionsProvider = ({children}) => {
     const [wloading, setWloading] = useState(false)
     const [transactionCount, setTransactionCount] = useState(localStorage.getItem('transactionCount'))
     const [transactions, setTransactions] = useState([]);
-    const [notify, setNotify] = useState(false);
 
     const getAllTransactions = async () =>{
         try {
@@ -50,6 +49,8 @@ export const TransactionsProvider = ({children}) => {
         try {
             if(!ethereum) return alert("Please Install MetaMask")
 
+            console.log(ethereum)
+
             const accounts = await ethereum.request({method: "eth_accounts"})
 
             if(accounts.length){
@@ -58,7 +59,6 @@ export const TransactionsProvider = ({children}) => {
                 getAllTransactions()
             }else{
                 console.log('No Accounts Found')
-                setNotify(true)
             }
         } catch (error) {
             console.log(error)
@@ -75,15 +75,11 @@ export const TransactionsProvider = ({children}) => {
             window.localStorage.setItem('transactionCount', transactionCount)
         } catch (error) {
             console.log(error)
-
-            throw new Error("No Ethereum Object")
         }
     }
 
     const connectWallet = async () => {
         try {
-            setNotify({})
-
             setWloading(true)
             if(!ethereum) return alert("Please Install MetaMask")
 
@@ -124,11 +120,12 @@ export const TransactionsProvider = ({children}) => {
 
             const transactionHash = await transactionContract.addToBlockchain(address, parsedAmount, message, keyword)
 
-            await transactionHash.wait()
+            console.log("hash", transactionHash)
 
             setLoading(false)
 
             const transactionCount = await transactionContract.getTransactionCount()
+            console.log("count", transactionCount)
 
             setTransactionCount(transactionCount.toNumber())
         } catch (error) {
@@ -145,7 +142,7 @@ export const TransactionsProvider = ({children}) => {
     }, [])
 
     return(
-        <TransactionContext.Provider value={{connectWallet, currentAccount, sendTransaction, setFormData, loading, transactions, wloading, notify}}>
+        <TransactionContext.Provider value={{connectWallet, currentAccount, sendTransaction, setFormData, loading, transactions, wloading}}>
             {children}
         </TransactionContext.Provider>
     )

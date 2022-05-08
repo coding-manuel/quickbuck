@@ -22,7 +22,6 @@ export default function Home() {
   });
 
   const handleSubmit = (values) =>{
-    console.log(values)
     sendTransaction(values)
   }
 

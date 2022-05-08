@@ -3,7 +3,6 @@ import { Paper, Stack, Title, Grid, Text, MediaQuery, Divider } from '@mantine/c
 import DummyData from '../utils/DummyData'
 import { shortenAddress } from '../utils/shorternAddress'
 import { TransactionContext } from '../context/TransactionsContext'
-import { showNotification } from '@mantine/notifications';
 
 const TransactionCard = ({id, url, message, timestamp, addressFrom, amount, addressTo }) => {
   return(
@@ -21,12 +20,6 @@ const TransactionCard = ({id, url, message, timestamp, addressFrom, amount, addr
 
 export default function Transactions() {
     const {currentAccount, transactions, notify} = useContext(TransactionContext);
-    useEffect(()=>{
-      showNotification({
-        title: 'Default notification',
-        message: 'Hey there, your code is awesome! 🤥',
-      })
-    }, [notify])
     return (
       <MediaQuery
         query="(max-width: 600px)"
