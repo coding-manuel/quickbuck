@@ -1,6 +1,6 @@
-# Basic Sample Hardhat Project
+# quickbuck
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
+quickbuck is a fast, safe, and easy to use app that allows you to transfer ethereum from one account to another. Simply enter the amount of ethereum you want to transfer, the address of the recipient, and confirm the transaction.
 
 Try running some of the following tasks:
 
