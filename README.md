@@ -44,3 +44,7 @@ The app would be used to transfer ethereum from one account to another. The app 
 ```
   $ npx hardhat run scripts/deploy.js --network localhost
 ```
+4. Start the frontend application 
+```
+  $ npm run dev
+```
